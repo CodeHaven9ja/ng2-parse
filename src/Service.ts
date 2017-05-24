@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Query } from './Query';
+import { PARSE_CONFIG } from './parse.module';
+import { ParseConfig } from './models/parse.config';
 
 @Injectable()
 export class ParseService {
@@ -21,9 +23,9 @@ export class ParseService {
   Session = Parse.Session;
   User = Parse.User;
 
-  constructor() {
-    Parse.initialize('myAppId');
-    Parse.serverURL = 'http://localhost:1337/';
+  constructor(@Inject(PARSE_CONFIG) private parseConfig:ParseConfig) {
+    Parse.initialize(parseConfig.appId);
+    Parse.serverURL = parseConfig.serverUrl;
   }
 
   Object(className?: string, options?: any): Parse.Object;
